@@ -1,0 +1,108 @@
+body {
+  font: $font-family-regular;
+  line-height: 1.4em;
+  background: $color-background;
+  color: $black;
+  min-width: 230px;
+  max-width: 550px;
+  margin: 0 auto;
+  font-weight: $light;
+}
+
+:focus {
+  outline: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.todoapp {
+  background: $white;
+  margin: 130px 0 40px 0;
+  position: relative;
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.2),
+    0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  input {
+		font-style: italic;
+		font-weight: $regular;
+		color: rgba(0, 0, 0, 0.4);
+  }
+	h1 {
+	position: absolute;
+	top: -140px;
+	width: 100%;
+	font-size: 80px;
+	font-weight: $extra-light;
+	text-align: center;
+	color: $light-pink;
+	text-rendering: optimizeLegibility;
+	}
+}
+
+.main{
+	position: relative;
+	z-index: 2;
+	border-top: 1px solid #e6e6e6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.clear-completed,
+html .clear-completed:active {
+	position: relative;
+	line-height: 20px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.clear-completed:hover {
+	text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+//General
+@import 'variables';
+@import 'mixins';
+@import 'normalize';
+
+//App
+@import '../App.scss';
+
+//Footer
+@import '../components/Footer/Footer.scss';
+
+//NewTaskForm
+@import '../components/NewTaskForm/NewTaskForm.scss';
+
+//Task
+@import '../components/Task/Task.scss';
+@import '../components/Task/Button.scss';
+
+//TaskList
+@import '../components/TaskList/TaskList.scss';
+
+//TasksFilter 
+@import '../components/TasksFilter/TasksFilter.scss'
+
+

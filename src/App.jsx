@@ -1,35 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+//верхний компонент
+import TaskList from "./components/TaskList/TaskList";
+import NewTaskForm from "./components/NewTaskForm/NewTaskForm";
+import Footer from "./components/Footer/Footer"
+import { Component } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default class App extends Component {
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	state = {
+		todoData: [
+			this.createToDoItem('Drink Coffee'),
+			this.createToDoItem('Sleep')
+		]
+	};
+
+	createToDoItem(label) {
+		const newId = uuidv4();
+		return {
+			label,
+			id: newId,
+			done: false,
+		}
+	}
+
+	deleteItem = (id) => {
+		this.setState(({ todoData }) => {
+			const index = todoData.findIndex((el) => el.id === id);
+			const newArray = todoData.toSpliced(index, 1);
+			return {
+				todoData: newArray
+			};
+		});
+	}
+
+	addItem = (text) => {
+		const newItem = this.createToDoItem(text)
+		this.setState(({ todoData }) => {
+			const newArray = todoData.concat(newItem)
+			return { todoData: newArray }
+		})
+	};
+
+	onToggleDone = (id) => {
+		this.setState(({ todoData }) => {
+			const newArray = todoData.map(item => {
+				if (item.id === id) {
+					return { ...item, done: !item.done };
+				}
+				return item;
+			});
+			return { todoData: newArray };
+		});
+	};
+
+	render() {
+		const { todoData } = this.state
+
+		const doneCount = todoData.filter(el => el.done).length;
+		const todoCount = todoData.length - doneCount;
+
+		return (
+			<section className="todoapp">
+				<NewTaskForm onItemAdded={this.addItem} />
+				<section className="main">
+					<TaskList
+						todos={todoData}
+						onDeleted={this.deleteItem}
+						onToggleDone={this.onToggleDone}
+					/>
+					<Footer toDo={todoCount} />
+				</section>
+			</section>
+		)
+	}
 }
-
-export default App
