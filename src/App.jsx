@@ -9,9 +9,9 @@ export default class App extends Component {
 
 	state = {
 		todoData: [
-			this.createToDoItem('Drink Coffee'),
-			this.createToDoItem('Sleep')
-		]
+			this.createToDoItem('Привет!'),
+		],
+		filter: 'all'
 	};
 
 	createToDoItem(label) {
@@ -43,18 +43,44 @@ export default class App extends Component {
 
 	onToggleDone = (id) => {
 		this.setState(({ todoData }) => {
-			const newArray = todoData.map(item => {
-				if (item.id === id) {
-					return { ...item, done: !item.done };
-				}
-				return item;
-			});
-			return { todoData: newArray };
+			const index = todoData.findIndex((el) => el.id === id);
+			const oldItem = todoData[index];
+			const newItem = { ...oldItem, done: !oldItem.done }
+			const newArray = todoData.with(index, newItem);
+			return {
+				todoData: newArray
+			}
 		});
 	};
 
+
+	filterItems = (todoData, filter) => {
+		switch (filter) {
+			case 'active':
+				return todoData.filter((item) => !item.done);
+			case 'completed':
+				return todoData.filter((item) => item.done);
+			default:
+				return todoData;
+		}
+	}
+
+	setFilter = (newFilter) => {
+		this.setState({ filter: newFilter })
+	}
+
+	deleteAllCompletedItems = () => {
+		this.setState(({ todoData }) => {
+			const newArray = todoData.filter(item => !item.done);
+			return {
+				todoData: newArray
+			}
+		})
+	}
+
 	render() {
-		const { todoData } = this.state
+		const { todoData, filter } = this.state
+		const visibleItems = this.filterItems(todoData, filter);
 
 		const doneCount = todoData.filter(el => el.done).length;
 		const todoCount = todoData.length - doneCount;
@@ -64,11 +90,16 @@ export default class App extends Component {
 				<NewTaskForm onItemAdded={this.addItem} />
 				<section className="main">
 					<TaskList
-						todos={todoData}
+						todos={visibleItems}
 						onDeleted={this.deleteItem}
 						onToggleDone={this.onToggleDone}
 					/>
-					<Footer toDo={todoCount} />
+					<Footer
+						toDo={todoCount}
+						filter={filter}
+						onFilterChange={this.setFilter}
+						onDeleteAllCompleted={this.deleteAllCompletedItems}
+					/>
 				</section>
 			</section>
 		)
