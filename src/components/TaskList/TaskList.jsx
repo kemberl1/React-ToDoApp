@@ -1,10 +1,11 @@
-//список задач
 import Task from "../Task/Task";
 import PropTypes from "prop-types";
+
 export default function TaskList({
   todos = [],
   onDeleted = () => {},
   onToggleDone = () => {},
+  onEdit = () => {},
 }) {
   return (
     <ul className="todo-list">
@@ -13,10 +14,12 @@ export default function TaskList({
         return (
           <Task
             key={id}
+            id={id}
             createdDate={new Date()}
             {...itemProps}
             onDeleted={() => onDeleted(id)}
             onToggleDone={() => onToggleDone(id)}
+            onEdit={onEdit}
           />
         );
       })}
@@ -34,4 +37,5 @@ TaskList.propTypes = {
   ).isRequired,
   onDeleted: PropTypes.func.isRequired,
   onToggleDone: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };

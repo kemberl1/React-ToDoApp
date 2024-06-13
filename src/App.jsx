@@ -75,6 +75,18 @@ export default class App extends Component {
     });
   };
 
+  onEditItem = (id, newLabel) => {
+    this.setState(({ todoData }) => {
+      const index = todoData.findIndex((el) => el.id === id);
+      const oldItem = todoData[index];
+      const newItem = { ...oldItem, label: newLabel };
+      const newArray = todoData.with(index, newItem);
+      return {
+        todoData: newArray,
+      };
+    });
+  };
+
   render() {
     const { todoData, filter } = this.state;
     const visibleItems = this.filterItems(todoData, filter);
@@ -90,6 +102,7 @@ export default class App extends Component {
             todos={visibleItems}
             onDeleted={this.deleteItem}
             onToggleDone={this.onToggleDone}
+            onEdit={this.onEditItem}
           />
           <Footer
             toDo={todoCount}
