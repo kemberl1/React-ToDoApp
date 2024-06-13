@@ -1,11 +1,10 @@
 .todo-list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .toggle-all {
-
   width: 1px;
   height: 1px;
   border: none; /* Mobile Safari */
@@ -24,7 +23,7 @@
     transform: rotate(90deg);
 
     &:before {
-      content: '❯';
+      content: "❯";
       font-size: 22px;
       color: #e6e6e6;
       padding: 10px 27px 10px 27px;
@@ -36,13 +35,13 @@
   }
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-	.toggle-all,
-	.todo-list li .toggle {
-		background: none;
-	}
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .toggle-all,
+  .todo-list li .toggle {
+    background: none;
+  }
 
-	.todo-list li .toggle {
-		height: 40px;
-	}
+  .todo-list li .toggle {
+    height: 40px;
+  }
 }

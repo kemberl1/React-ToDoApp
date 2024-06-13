@@ -1,5 +1,9 @@
 //Fonts
-$font-family-regular: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-family-regular:
+  14px "Helvetica Neue",
+  Helvetica,
+  Arial,
+  sans-serif;
 
 //Font-weight
 $extra-light: 200;
@@ -9,9 +13,9 @@ $regular: 400;
 //Color
 $black: #111111;
 $color-background: #f5f5f5;
-$white:#fff;
+$white: #fff;
 $pink: #af5b5e;
-$light-pink:rgba(175, 47, 47, 0.15);
+$light-pink: rgba(175, 47, 47, 0.15);
 $dark-pink: #cc9a9a;
 $grey: #4d4d4d;
 $light-grey: #999;

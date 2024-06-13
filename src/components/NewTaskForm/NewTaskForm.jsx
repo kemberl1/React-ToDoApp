@@ -1,40 +1,52 @@
 //форма для добавления
 
-import React, { Component } from "react"
+import { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class NewTaskForm extends Component {
-	constructor(){
-	super()
-	this.searchText = 'What needs to be done?';
-	}
+  constructor() {
+    super();
+    this.searchText = "What needs to be done?";
+  }
 
-	state = {
-		label: ''
-	}
+  state = {
+    label: "",
+  };
 
-	onLabelChange = (event) => {
-		this.setState({ label: event.target.value })
-	}
+  onLabelChange = (event) => {
+    this.setState({ label: event.target.value });
+  };
 
-	onSubmit = (event) => {
-		event.preventDefault();
-		this.props.onItemAdded(this.state.label)
-		this.setState({ label: '' });
-	}
+  onSubmit = (event) => {
+    event.preventDefault();
+    const { label } = this.state;
+    if (label.trim("")) {
+      this.props.onItemAdded(label);
+      this.setState({ label: "" });
+    } else {
+      alert("Please enter a task description");
+      this.setState({ label: "" });
+    }
+  };
 
-	render() {
-	return (
-		<header className="header">
-			<h1>todos</h1>
-			<form onSubmit={this.onSubmit}>
-			<input 
-			className="new-todo" 
-			placeholder={this.searchText} 
-			autoFocus 
-			onChange={this.onLabelChange}
-			value={this.state.label}/>
-			</form>
-		</header>
-	)
+  render() {
+    return (
+      <header className="header">
+        <h1>todos</h1>
+        <form onSubmit={this.onSubmit}>
+          <input
+            className="new-todo"
+            placeholder={this.searchText}
+            autoFocus
+            onChange={this.onLabelChange}
+            value={this.state.label}
+          />
+        </form>
+      </header>
+    );
+  }
 }
-}
+
+NewTaskForm.propTypes = {
+  onItemAdded: PropTypes.func.isRequired,
+};
