@@ -1,22 +1,22 @@
 //General
-@import "variables";
-@import "mixins";
-@import "normalize";
+@import 'variables';
+@import 'mixins';
+@import 'normalize';
 
 //App
-@import "../App.scss";
+@import '../App.scss';
 
 //Footer
-@import "../components/Footer/Footer.scss";
+@import '../components/Footer/Footer.scss';
 
 //NewTaskForm
-@import "../components/NewTaskForm/NewTaskForm.scss";
+@import '../components/NewTaskForm/NewTaskForm.scss';
 
 //Task
-@import "../components/Task/Task.scss";
+@import '../components/Task/Task.scss';
 
 //TaskList
-@import "../components/TaskList/TaskList.scss";
+@import '../components/TaskList/TaskList.scss';
 
 //TasksFilter
-@import "../components/TasksFilter/TasksFilter.scss";
+@import '../components/TasksFilter/TasksFilter.scss';

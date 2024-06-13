@@ -1,12 +1,8 @@
-import Task from "../Task/Task";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-export default function TaskList({
-  todos = [],
-  onDeleted = () => {},
-  onToggleDone = () => {},
-  onEdit = () => {},
-}) {
+import Task from '../Task/Task';
+
+export default function TaskList({ todos = [], onDeleted = () => {}, onToggleDone = () => {}, onEdit = () => {} }) {
   return (
     <ul className="todo-list">
       {todos.map((todo) => {
@@ -33,7 +29,7 @@ TaskList.propTypes = {
       id: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
-    })
+    }),
   ).isRequired,
   onDeleted: PropTypes.func.isRequired,
   onToggleDone: PropTypes.func.isRequired,

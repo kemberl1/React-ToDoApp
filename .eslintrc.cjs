@@ -1,34 +1,49 @@
 module.exports = {
-  root: true,
   env: {
     browser: true,
-    es2020: true,
+    es2021: true,
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended",
-    "plugin:prettier/recommended",
-  ],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  ignorePatterns: ['node_modules', 'dist', 'build'],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb', 'plugin:prettier/recommended'],
+  parser: '@babel/eslint-parser',
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    ecmaFeatures: { jsx: true },
-  },
-  settings: {
-    react: {
-      version: "18.2",
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    requireConfigFile: false,
+    babelOptions: {
+      presets: ['@babel/preset-react'],
     },
   },
-  plugins: ["react-refresh", "html", "css-modules", "prettier"],
+  plugins: ['react', 'import', 'react-hooks', 'jsx-a11y', 'prettier'],
   rules: {
-    "react/jsx-no-target-blank": "off",
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true },
+    indent: ['error', 2],
+    'linebreak-style': 'off',
+    quotes: ['error', 'single'],
+    semi: ['error', 'never'],
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'warn',
+    'import/no-unresolved': ['error', { caseSensitive: false }],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'import/order': [
+      'error',
+      {
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        'newlines-between': 'always',
+      },
     ],
-    "prettier/prettier": "error",
+    'react/button-has-type': 'error',
+    'react/prefer-stateless-function': [1, { ignorePureComponents: true }],
+    'react/require-default-props': 'error',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'src/'],
+      },
+    },
   },
 };

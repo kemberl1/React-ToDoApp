@@ -1,15 +1,16 @@
-//верхний компонент
-import TaskList from "./components/TaskList/TaskList";
-import NewTaskForm from "./components/NewTaskForm/NewTaskForm";
-import Footer from "./components/Footer/Footer";
-import { Component } from "react";
-import { v4 as uuidv4 } from "uuid";
+// верхний компонент
+import { Component } from 'react';
+import { v4 as uuidv4 } from 'uuid'
+
+import TaskList from './components/TaskList/TaskList'
+import NewTaskForm from './components/NewTaskForm/NewTaskForm'
+import Footer from './components/Footer/Footer'
 
 export default class App extends Component {
   state = {
     todoData: [],
-    filter: "all",
-  };
+    filter: 'all',
+  }
 
   createToDoItem(label) {
     const newId = uuidv4();
@@ -24,55 +25,55 @@ export default class App extends Component {
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
       const index = todoData.findIndex((el) => el.id === id);
-      const newArray = todoData.toSpliced(index, 1);
+      const newArray = todoData.toSpliced(index, 1)
       return {
         todoData: newArray,
-      };
-    });
-  };
+      }
+    })
+  }
 
   addItem = (text) => {
-    const newItem = this.createToDoItem(text);
+    const newItem = this.createToDoItem(text)
     this.setState(({ todoData }) => {
-      const newArray = todoData.concat(newItem);
-      return { todoData: newArray };
-    });
-  };
+      const newArray = todoData.concat(newItem)
+      return { todoData: newArray }
+    })
+  }
 
   onToggleDone = (id) => {
     this.setState(({ todoData }) => {
-      const index = todoData.findIndex((el) => el.id === id);
+      const index = todoData.findIndex((el) => el.id === id)
       const oldItem = todoData[index];
-      const newItem = { ...oldItem, done: !oldItem.done };
-      const newArray = todoData.with(index, newItem);
+      const newItem = { ...oldItem, done: !oldItem.done }
+      const newArray = todoData.with(index, newItem)
       return {
         todoData: newArray,
       };
-    });
+    })
   };
 
   filterItems = (todoData, filter) => {
     switch (filter) {
-      case "active":
-        return todoData.filter((item) => !item.done);
-      case "completed":
-        return todoData.filter((item) => item.done);
-      default:
+      case 'active':
+        return todoData.filter((item) => !item.done)
+      case 'completed':
+        return todoData.filter((item) => item.done)
+      default
         return todoData;
     }
   };
 
   setFilter = (newFilter) => {
-    this.setState({ filter: newFilter });
+    this.setState({ filter: newFilter })
   };
 
   deleteAllCompletedItems = () => {
     this.setState(({ todoData }) => {
-      const newArray = todoData.filter((item) => !item.done);
+      const newArray = todoData.filter((item) => !item.done)
       return {
         todoData: newArray,
       };
-    });
+    })
   };
 
   onEditItem = (id, newLabel) => {
@@ -84,7 +85,7 @@ export default class App extends Component {
       return {
         todoData: newArray,
       };
-    });
+    })
   };
 
   render() {

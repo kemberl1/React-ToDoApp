@@ -1,10 +1,11 @@
-//footer с информацией и кнопками
-import TasksFilter from "../TasksFilter/TasksFilter";
-import PropTypes from "prop-types";
+// footer с информацией и кнопками
+import PropTypes from 'prop-types';
+
+import TasksFilter from '../TasksFilter/TasksFilter';
 
 export default function Footer({
   toDo = 0,
-  filter = "all",
+  filter = 'all',
   onFilterChange = () => {},
   onDeleteAllCompleted = () => {},
 }) {

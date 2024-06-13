@@ -1,7 +1,7 @@
-//одна задача
-import { formatDistanceToNow } from "date-fns";
-import { Component } from "react";
-import PropTypes from "prop-types";
+// одна задача
+import { formatDistanceToNow } from 'date-fns';
+import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Task extends Component {
   state = {
@@ -11,22 +11,24 @@ export default class Task extends Component {
 
   handleEdit = () => {
     this.setState({ isEditing: true });
-  };
+  }
 
   handleChange = (event) => {
     this.setState({ editText: event.target.value });
-  };
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
     const { id, onEdit } = this.props;
     onEdit(id, this.state.editText);
     this.setState({ isEditing: false });
-  };
+  }
 
   handleBlur = () => {
-    this.handleSubmit();
-  };
+    const { id, onEdit } = this.props;
+    onEdit(id, this.state.editText);
+    this.setState({ isEditing: false });
+  }
 
   render() {
     const { label, createdDate, onDeleted, onToggleDone, done } = this.props;
@@ -36,15 +38,19 @@ export default class Task extends Component {
     const { isEditing, editText } = this.state;
 
     return (
-      <li className={done ? "completed" : isEditing ? "editing" : ""}>
+      <li className={done ? 'completed' : isEditing ? 'editing' : ''}>
         <div className="view">
           <input className="toggle" type="checkbox" onChange={onToggleDone} />
           <label>
             <span className="description">{label}</span>
-            <span className="created"> created {formattedDate}</span>
+            <span className="created">
+              {' '}
+              created
+              {formattedDate}
+            </span>
           </label>
-          <button className="icon icon-edit" onClick={this.handleEdit}></button>
-          <button className="icon icon-destroy" onClick={onDeleted}></button>
+          <button className="icon icon-edit" onClick={this.handleEdit} />
+          <button className="icon icon-destroy" onClick={onDeleted} />
         </div>
         {isEditing && (
           <form onSubmit={this.handleSubmit}>
