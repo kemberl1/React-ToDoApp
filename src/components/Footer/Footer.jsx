@@ -1,7 +1,7 @@
 // footer с информацией и кнопками
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
-import TasksFilter from '../TasksFilter/TasksFilter';
+import TasksFilter from '../TasksFilter/TasksFilter'
 
 export default function Footer({
   toDo = 0,
@@ -13,11 +13,11 @@ export default function Footer({
     <footer className="footer">
       <span className="todo-count">{toDo} items left</span>
       <TasksFilter filter={filter} onFilterChange={onFilterChange} />
-      <button className="clear-completed" onClick={onDeleteAllCompleted}>
+      <button type="button" className="clear-completed" onClick={onDeleteAllCompleted}>
         Clear completed
       </button>
     </footer>
-  );
+  )
 }
 
 Footer.propTypes = {
@@ -25,4 +25,4 @@ Footer.propTypes = {
   filter: PropTypes.string.isRequired,
   onFilterChange: PropTypes.func.isRequired,
   onDeleteAllCompleted: PropTypes.func.isRequired,
-};
+}

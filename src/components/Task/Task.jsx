@@ -1,47 +1,58 @@
-// одна задача
-import { formatDistanceToNow } from 'date-fns';
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { formatDistanceToNow } from 'date-fns'
+import { Component } from 'react'
+import PropTypes from 'prop-types'
 
 export default class Task extends Component {
-  state = {
-    isEditing: false,
-    editText: this.props.label,
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      isEditing: false,
+      editText: props.label,
+    }
+  }
 
   handleEdit = () => {
-    this.setState({ isEditing: true });
+    this.setState({ isEditing: true })
   }
 
   handleChange = (event) => {
-    this.setState({ editText: event.target.value });
+    this.setState({ editText: event.target.value })
   }
 
   handleSubmit = (event) => {
-    event.preventDefault();
-    const { id, onEdit } = this.props;
-    onEdit(id, this.state.editText);
-    this.setState({ isEditing: false });
+    event.preventDefault()
+    const { id, onEdit } = this.props
+    const { editText } = this.state
+    onEdit(id, editText)
+    this.setState({ isEditing: false })
   }
 
   handleBlur = () => {
-    const { id, onEdit } = this.props;
-    onEdit(id, this.state.editText);
-    this.setState({ isEditing: false });
+    const { id, onEdit } = this.props
+    const { editText } = this.state
+    onEdit(id, editText)
+    this.setState({ isEditing: false })
   }
 
   render() {
-    const { label, createdDate, onDeleted, onToggleDone, done } = this.props;
+    const { label, createdDate, onDeleted, onToggleDone, done, id } = this.props
+    const { isEditing, editText } = this.state
     const formattedDate = formatDistanceToNow(new Date(createdDate), {
       includeSeconds: true,
-    });
-    const { isEditing, editText } = this.state;
+    })
+
+    let taskClassName = ''
+    if (done) {
+      taskClassName = 'completed'
+    } else if (isEditing) {
+      taskClassName = 'editing'
+    }
 
     return (
-      <li className={done ? 'completed' : isEditing ? 'editing' : ''}>
+      <li className={taskClassName}>
         <div className="view">
-          <input className="toggle" type="checkbox" onChange={onToggleDone} />
-          <label>
+          <input id={id} className="toggle" type="checkbox" onChange={onToggleDone} />
+          <label htmlFor={`toggle_${id}`}>
             <span className="description">{label}</span>
             <span className="created">
               {' '}
@@ -49,8 +60,8 @@ export default class Task extends Component {
               {formattedDate}
             </span>
           </label>
-          <button className="icon icon-edit" onClick={this.handleEdit} />
-          <button className="icon icon-destroy" onClick={onDeleted} />
+          <button type="button" className="icon icon-edit" onClick={this.handleEdit} aria-label="Edit task" />
+          <button type="button" className="icon icon-destroy" onClick={onDeleted} aria-label="Delete task" />
         </div>
         {isEditing && (
           <form onSubmit={this.handleSubmit}>
@@ -60,12 +71,11 @@ export default class Task extends Component {
               value={editText}
               onChange={this.handleChange}
               onBlur={this.handleBlur}
-              autoFocus
             />
           </form>
         )}
       </li>
-    );
+    )
   }
 }
 
@@ -77,4 +87,4 @@ Task.propTypes = {
   done: PropTypes.bool.isRequired,
   onEdit: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
-};
+}

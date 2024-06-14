@@ -2,9 +2,10 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true,
   },
   ignorePatterns: ['node_modules', 'dist', 'build'],
-  extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb', 'plugin:prettier/recommended'],
+  extends: ['airbnb', 'airbnb/hooks', 'plugin:react/jsx-runtime', 'prettier'],
   parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaFeatures: {
@@ -19,26 +20,32 @@ module.exports = {
   },
   plugins: ['react', 'import', 'react-hooks', 'jsx-a11y', 'prettier'],
   rules: {
-    indent: ['error', 2],
-    'linebreak-style': 'off',
+    indent: ['error', 2, { SwitchCase: 1 }],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+    'linebreak-style': [0, 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
     'react/react-in-jsx-scope': 'off',
-    'react/prop-types': 'warn',
-    'import/no-unresolved': ['error', { caseSensitive: false }],
+    'react/prop-types': 0,
+    'import/no-unresolved': [2, { caseSensitive: false }],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'import/order': [
-      'error',
+      2,
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
         'newlines-between': 'always',
       },
     ],
-    'react/button-has-type': 'error',
-    'react/prefer-stateless-function': [1, { ignorePureComponents: true }],
-    'react/require-default-props': 'error',
   },
   settings: {
+    react: {
+      version: 'detect',
+    },
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -46,4 +53,4 @@ module.exports = {
       },
     },
   },
-};
+}
