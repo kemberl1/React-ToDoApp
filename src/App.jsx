@@ -1,4 +1,4 @@
-// верхний компонент
+// App.jsx
 import { Component } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -18,13 +18,15 @@ export default class App extends Component {
     }
   }
 
-  static createToDoItem(label) {
+  static createToDoItem({ label, minutes, seconds }) {
     const newId = uuidv4()
     return {
       label,
       id: newId,
       done: false,
       createdDate: new Date(),
+      minutes,
+      seconds,
     }
   }
 
@@ -43,8 +45,8 @@ export default class App extends Component {
     })
   }
 
-  addItem = (text) => {
-    const newItem = App.createToDoItem(text)
+  addItem = (label, minutes, seconds) => {
+    const newItem = App.createToDoItem({ label, minutes, seconds })
     this.setState(({ todoData }) => {
       const newArray = todoData.concat(newItem)
       return { todoData: newArray }

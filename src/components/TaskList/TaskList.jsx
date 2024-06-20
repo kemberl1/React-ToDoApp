@@ -12,6 +12,8 @@ export default function TaskList({ todos = [], onDeleted = () => {}, onToggleDon
           label={todo.label}
           done={todo.done}
           createdDate={new Date()}
+          minutes={todo.minutes}
+          seconds={todo.seconds}
           onDeleted={() => onDeleted(todo.id)}
           onToggleDone={() => onToggleDone(todo.id)}
           onEdit={onEdit}
@@ -27,6 +29,8 @@ TaskList.propTypes = {
       id: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
+			seconds: PropTypes.string.isRequired,
+			minutes: PropTypes.string.isRequired,
     })
   ).isRequired,
   onDeleted: PropTypes.func.isRequired,
