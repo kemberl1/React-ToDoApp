@@ -29,8 +29,8 @@ TaskList.propTypes = {
       id: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
-			seconds: PropTypes.string.isRequired,
-			minutes: PropTypes.string.isRequired,
+      seconds: PropTypes.string.isRequired,
+      minutes: PropTypes.string.isRequired,
     })
   ).isRequired,
   onDeleted: PropTypes.func.isRequired,

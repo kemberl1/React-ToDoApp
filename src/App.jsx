@@ -18,7 +18,7 @@ export default class App extends Component {
     }
   }
 
-  static createToDoItem({ label, minutes, seconds }) {
+  static createToDoItem = ({ label, minutes, seconds }) => {
     const newId = uuidv4()
     return {
       label,
@@ -54,19 +54,18 @@ export default class App extends Component {
   }
 
   onToggleDone = (id) => {
-    this.setState(({ todoData }) => {
-      const index = todoData.findIndex((el) => el.id === id)
-      const oldItem = todoData[index]
-      const newItem = { ...oldItem, done: !oldItem.done }
-      const newArray = todoData.with(index, newItem)
-      return {
-        todoData: newArray,
-      }
-    })
+    this.setState(({ todoData }) => ({
+      todoData: todoData.map((task) => {
+        if (task.id === id) {
+          return { ...task, done: !task.done }
+        }
+        return task
+      }),
+    }))
   }
 
-  setFilter = (newFilter) => {
-    this.setState({ filter: newFilter })
+  changeFilter = (filter) => {
+    this.setState({ filter })
   }
 
   deleteAllCompletedItems = () => {
@@ -110,7 +109,7 @@ export default class App extends Component {
           <Footer
             toDo={todoCount}
             filter={filter}
-            onFilterChange={this.setFilter}
+            onFilterChange={this.changeFilter}
             onDeleteAllCompleted={this.deleteAllCompletedItems}
           />
         </section>

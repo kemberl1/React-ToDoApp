@@ -8,26 +8,29 @@ export default class Task extends Component {
     this.state = {
       isEditing: false,
       editText: props.label,
-      minutes: props.minutes,
-      seconds: props.seconds,
+      minutes: parseInt(props.minutes, 10),
+      seconds: parseInt(props.seconds, 10),
       timerRunning: false,
     }
     this.timerInterval = null
+    this.localStorageKey = `timer_${props.id}`
   }
 
   componentDidMount() {
-    this.updateTimerState()
+    this.loadTimerState()
+    this.startTimer()
   }
 
   componentDidUpdate(prevProps) {
-    const { done } = this.props
-    if (prevProps.done !== done) {
+    const { done, id } = this.props
+    if (prevProps.done !== done || prevProps.id !== id) {
       this.updateTimerState()
     }
   }
 
   componentWillUnmount() {
     this.clearTimer()
+    this.saveTimerState()
   }
 
   onToggleDone = () => {
@@ -38,35 +41,45 @@ export default class Task extends Component {
 
   clearTimer = () => {
     clearInterval(this.timerInterval)
+    this.timerInterval = null
     this.setState({ timerRunning: false })
   }
 
   startTimer = () => {
     const { timerRunning } = this.state
     if (!timerRunning) {
-      this.setState({ timerRunning: true })
-      this.timerInterval = setInterval(() => {
-        const { minutes, seconds } = this.state
-        let mins = parseInt(minutes, 10)
-        let secs = parseInt(seconds, 10)
-
-        if (mins === 0 && secs === 0) {
-          this.clearTimer()
-        } else {
-          if (secs === 0) {
-            mins -= 1
-            secs = 59
-          } else {
-            secs -= 1
-          }
-          this.setState({ minutes: mins.toString(), seconds: secs.toString() })
-        }
-      }, 1000)
+      this.setState({ timerRunning: true }, () => {
+        this.timerInterval = setInterval(() => {
+          this.setState(
+            (prevState) => this.decrementTimer(prevState),
+            () => {
+              this.saveTimerState()
+            }
+          )
+        }, 1000)
+      })
     }
+  }
+
+  decrementTimer = (prevState) => {
+    let { minutes, seconds } = prevState
+
+    if (minutes === 0 && seconds === 0) {
+      this.clearTimer()
+    } else if (seconds === 0) {
+      minutes -= 1
+      seconds = 59
+    } else {
+      seconds -= 1
+    }
+    return { minutes, seconds }
   }
 
   pauseTimer = () => {
     this.clearTimer()
+    this.setState({ timerRunning: false }, () => {
+      this.saveTimerState()
+    })
   }
 
   updateTimerState = () => {
@@ -75,6 +88,34 @@ export default class Task extends Component {
       this.pauseTimer()
     } else {
       this.startTimer()
+    }
+  }
+
+  saveTimerState = () => {
+    const { minutes, seconds, timerRunning } = this.state
+    const stateToSave = {
+      minutes,
+      seconds,
+      timerRunning,
+    }
+    localStorage.setItem(this.localStorageKey, JSON.stringify(stateToSave))
+  }
+
+  loadTimerState = () => {
+    const savedState = JSON.parse(localStorage.getItem(this.localStorageKey))
+    if (savedState) {
+      this.setState(
+        {
+          minutes: savedState.minutes,
+          seconds: savedState.seconds,
+          timerRunning: savedState.timerRunning,
+        },
+        () => {
+          if (savedState.timerRunning) {
+            this.startTimer()
+          }
+        }
+      )
     }
   }
 
@@ -116,9 +157,9 @@ export default class Task extends Component {
     }
 
     return (
-      <li className={taskClassName}>
+      <li className={taskClassName} key={id}>
         <div className="view">
-          <input id={id} className="toggle" type="checkbox" onChange={this.onToggleDone} />
+          <input id={id} className="toggle" type="checkbox" onChange={this.onToggleDone} checked={done} />
           <label htmlFor={`toggle_${id}`}>
             <span className="title">{label}</span>
             <span className="description description-timer">
@@ -129,7 +170,7 @@ export default class Task extends Component {
                 aria-label={timerRunning ? 'Timer off' : 'Timer on'}
               />
               <span className="time">
-                {minutes}:{seconds}
+                {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </span>
             </span>
             <span className="description">created {formattedDate}</span>
