@@ -122,24 +122,23 @@
 
 .todo-list li .icon-pause,
 .todo-list li .icon-play {
-	font-size: 18px;
-	width: 18px;
-	height: 18px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .todo-list li .icon-play {
-	font-size: 15px;
+  font-size: 15px;
 }
 
 .icon-pause:after {
-	content: '⏸';
+  content: '⏸';
 }
 
 .icon-play:after {
-	content: '▶';
+  content: '▶';
 }
 
-.time{
-	margin-left: 10px;
+.time {
+  margin-left: 10px;
 }
-

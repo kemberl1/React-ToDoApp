@@ -2,7 +2,15 @@ import PropTypes from 'prop-types'
 
 import Task from '../Task/Task'
 
-export default function TaskList({ todos = [], onDeleted = () => {}, onToggleDone = () => {}, onEdit = () => {} }) {
+export default function TaskList({
+  todos = [],
+  onDeleted = () => {},
+  onToggleDone = () => {},
+  onEdit = () => {},
+  timers = {},
+  startTimer = () => {},
+  pauseTimer = () => {},
+}) {
   return (
     <ul className="todo-list">
       {todos.map((todo) => (
@@ -14,9 +22,12 @@ export default function TaskList({ todos = [], onDeleted = () => {}, onToggleDon
           createdDate={new Date()}
           minutes={todo.minutes}
           seconds={todo.seconds}
-          onDeleted={() => onDeleted(todo.id)}
-          onToggleDone={() => onToggleDone(todo.id)}
+          onDeleted={onDeleted}
+          onToggleDone={onToggleDone}
           onEdit={onEdit}
+          timers={timers}
+          startTimer={startTimer}
+          pauseTimer={pauseTimer}
         />
       ))}
     </ul>
@@ -29,11 +40,13 @@ TaskList.propTypes = {
       id: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
-      seconds: PropTypes.string.isRequired,
-      minutes: PropTypes.string.isRequired,
+      seconds: PropTypes.number.isRequired,
+      minutes: PropTypes.number.isRequired,
     })
   ).isRequired,
   onDeleted: PropTypes.func.isRequired,
   onToggleDone: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
+  startTimer: PropTypes.func.isRequired,
+  pauseTimer: PropTypes.func.isRequired,
 }
