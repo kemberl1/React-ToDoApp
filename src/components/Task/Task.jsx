@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from 'date-fns'
-import { Component } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default class Task extends Component {
@@ -8,6 +8,18 @@ export default class Task extends Component {
     this.state = {
       isEditing: false,
       editText: props.label,
+    }
+    this.editField = React.createRef()
+  }
+
+  componentDidUpdate(prevState) {
+    const { isEditing } = this.state
+    if (!prevState.isEditing && isEditing) {
+      document.addEventListener('click', this.handleClickOutside, true)
+      document.addEventListener('keydown', this.handleEscKey, true)
+    } else if (prevState.isEditing && !isEditing) {
+      document.removeEventListener('click', this.handleClickOutside, true)
+      document.removeEventListener('keydown', this.handleEscKey, true)
     }
   }
 
@@ -19,19 +31,27 @@ export default class Task extends Component {
     this.setState({ editText: event.target.value })
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-    const { id, onEdit } = this.props
+  handleSubmit = (save = true) => {
+    const { id, onEdit, label } = this.props
     const { editText } = this.state
-    onEdit(id, editText)
+    if (save) {
+      onEdit(id, editText)
+    } else {
+      this.setState({ editText: label })
+    }
     this.setState({ isEditing: false })
   }
 
-  handleBlur = () => {
-    const { id, onEdit } = this.props
-    const { editText } = this.state
-    onEdit(id, editText)
-    this.setState({ isEditing: false })
+  handleClickOutside = (event) => {
+    if (this.editField.current && !this.editField.current.contains(event.target)) {
+      this.handleSubmit(false)
+    }
+  }
+
+  handleEscKey = (event) => {
+    if (event.key === 'Escape') {
+      this.setState({ isEditing: false })
+    }
   }
 
   render() {
@@ -75,13 +95,19 @@ export default class Task extends Component {
           <button type="button" className="icon icon-destroy" onClick={() => onDeleted(id)} aria-label="Delete task" />
         </div>
         {isEditing && (
-          <form onSubmit={this.handleSubmit}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              this.handleSubmit()
+            }}
+            ref={this.editField}
+          >
             <input
               type="text"
               className="edit"
               value={editText}
               onChange={this.handleChange}
-              onBlur={this.handleBlur}
+              onBlur={() => this.handleSubmit(false)}
             />
           </form>
         )}
